@@ -21,7 +21,7 @@
           You can check out my github page <a class="underline" href="https://github.com/marcindawidziuk">here</a>
         </p>
         <p class="mt-4 pt-4 text-gray-800 border-t border-dashed">
-          Some of my projects: <a class="underline" href="https://poker.marcin.uk">Scrum Poinint Poker</a>
+          Some of my projects: <a class="underline" href="https://poker.marcin.uk">Scrum Pointing Poker</a>
         </p>
       </div>
       <div class="flex justify-center pt-4 space-x-2">
