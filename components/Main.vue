@@ -4,7 +4,8 @@
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
       <div class="flex justify-center pt-8 sm:pt-0">
         <nuxt-img class="object-cover w-32 h-32 rounded-full"
-                  sizes="sm:100vw md:50vw lg:128px"
+                  format="webp"
+                  width="128" height="128"
                   src="mypic.png"/>
       </div>
       <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg p-6">
