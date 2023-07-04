@@ -6,7 +6,7 @@
         <nuxt-img class="object-cover w-32 h-32 rounded-full"
                   format="webp"
                   width="128" height="128"
-                  src="mypic.png"/>
+                  src="mypic.jpg"/>
       </div>
       <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg p-6">
         <h2 class="text-xl leading-7 font-semibold">
