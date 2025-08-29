@@ -1,0 +1,221 @@
+---
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css'
+
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<body class="min-h-full bg-gradient-to-br from-slate-900 via-slate-950 to-black text-slate-100 antialiased">
+	<main class="max-w-3xl mx-auto px-4 py-12">
+		<header class="mb-6 text-center">
+			<h1 class="text-2xl font-semibold tracking-tight">Marcin Dawidziuk</h1>
+			<p class="text-sm text-slate-400">.NET • Team Lead • Backend-focused</p>
+		</header>
+
+		<!-- Terminal Shell -->
+		<section
+			class="rounded-2xl shadow-2xl ring-1 ring-white/10 bg-slate-900/70 backdrop-blur overflow-hidden"
+			aria-label="Mock terminal"
+		>
+			<!-- Title bar -->
+			<div class="flex items-center gap-2 px-4 py-3 bg-slate-800/70 border-b border-white/10">
+				<div class="flex items-center gap-2">
+					<span class="h-3 w-3 rounded-full bg-red-500/90"></span>
+					<span class="h-3 w-3 rounded-full bg-yellow-400/90"></span>
+					<span class="h-3 w-3 rounded-full bg-green-500/90"></span>
+				</div>
+				<div class="mx-auto text-sm text-slate-300">guest@marcin-pc: ~</div>
+				<div class="text-[10px] text-slate-500"></div>
+			</div>
+
+			<!-- Output / Scrollback -->
+			<div id="output" class="mono px-4 pt-4 pb-20 text-[13.5px] leading-relaxed h-[420px] overflow-y-auto">
+				<!-- Seeded content will be injected here -->
+			</div>
+
+			<!-- Prompt / Input -->
+			<div class="absolute left-0 right-0 translate-y-[-56px]"></div>
+			<form id="promptForm" class="mono sticky bottom-0 w-full">
+				<fieldset class="flex items-center gap-2 px-4 py-3 bg-slate-800/70 border-t border-white/10">
+					<label for="cmd" class="text-sky-400 select-none">guest@demo<span class="text-slate-400">:</span><span class="text-emerald-400">~</span><span class="text-slate-400">$</span></label>
+					<input
+						id="cmd"
+						type="text"
+						autocomplete="off"
+						spellcheck="false"
+						aria-label="Terminal input"
+						placeholder="type 'help' and press Enter"
+						class="flex-1 bg-transparent outline-none placeholder:text-slate-500"
+					/>
+				</fieldset>
+			</form>
+		</section>
+
+		<!-- Footer -->
+		<p class="text-center text-xs text-slate-500 mt-4">Try: <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">help</kbd>, <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">echo hello</kbd>, <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">date</kbd>, <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">ls</kbd>, <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">whoami</kbd>, <kbd class="px-1 py-0.5 rounded bg-slate-800 border border-white/10">clear</kbd></p>
+	</main>
+
+	<script>
+		const output = document.getElementById('output');
+		const form = document.getElementById('promptForm');
+		const input = document.getElementById('cmd');
+
+		const commands = {
+			help() {
+				return [
+					"Available commands:",
+					"  help           Show this help",
+					"  echo <text>    Print text",
+					"  date           Show current date/time",
+					"  ls             List directory",
+					"  whoami         Print the current user",
+					"  clear          Clear the screen"
+				].join('\n');
+			},
+			echo(...args) { return args.join(' '); },
+			date() { return new Date().toString(); },
+			ls(...args) {
+				if (args.length == 1 && args[0] == "projects") {
+					return "scrum-poker (<a href='https://scrumpoker.uk'>scrumpoker.uk</a>)"
+				}else if (args.length == 0) {
+					return 'README.md  projects'; }
+				},
+			whoami() { return 'Marcin Dawidziuk'; },
+			cat(...args) {
+				if (args.length == 1 && args[0] == "README.md") {
+					return 'Welcome to my website';
+				}
+				return 'error: file not found'; },
+			location() { return 'Plymouth, UK'; },
+			links() {
+				return '<a href="https://github.com/marcindawidziuk" target="_blank" class="hover:underline">https://github.com/marcindawidziuk</a> ' +
+				'<a href="https://www.linkedin.com/in/marcin-dawidziuk-3b0448185" target="_blank" class="hover:underline">www.linkedin.com/in/marcin-dawidziuk-3b0448185</a>'; },
+			linkedin() { return '<a href="https://www.linkedin.com/in/marcin-dawidziuk-3b0448185" target="_blank" class="hover:underline">www.linkedin.com/in/marcin-dawidziuk-3b0448185</a>'; },
+			github() { return '<a href="https://github.com/marcindawidziuk" target="_blank" class="hover:underline">https://github.com/marcindawidziuk</a>'; },
+			experience() {
+				return "energy trading compliance, healthcare, bespoke software, manufacturing, websites, apis, mobiles apps, technical leadership, team management, scrum, roadmap planning, product strategy, delivery management, team scaling, recruitment, coaching";
+			},
+			backend() { return '.NET, ASP.NET, Kotlin, Java, Entity Framework, SQLServer, Kafka, RabbitMq, Azure, Docker, Kibana, ElasticSearch, OpenTelemetry, Performance Profiling'; },
+			frontend() { return 'Vue.js, PWA, Tailwind, Bootstrap, WPF, Xamarin (MAUI), Android Development'; },
+			domain() { return 'Plymouth, UK'; },
+			interests() { return 'photography, hiking, movies'; },
+			clear() { output.innerHTML = ''; return null; }
+		};
+
+		const writeLine = (html) => {
+			const line = document.createElement('pre');
+			line.className = 'whitespace-pre-wrap break-words';
+			line.innerHTML = html;
+			output.appendChild(line);
+			output.scrollTop = output.scrollHeight;
+		};
+
+		const append = (html) => {
+			const line = document.createElement('span');
+			line.className = '';
+			line.innerHTML = html;
+			output.lastChild.appendChild(line);
+			output.scrollTop = output.scrollHeight;
+		};
+
+		const writePrompt = async (cmd, delay) => {
+			writeLine(`<span class="text-sky-400 animate-bounce">guest@marcin-pc</span><span class="text-slate-400">:</span><span class="text-emerald-400">~</span><span class="text-slate-400">$</span> `);
+			const escaped = escapeHtml(cmd)
+			//await new Promise(r => setTimeout(r, randomIntFromInterval(400, 1300)));
+			await new Promise(r => setTimeout(r, 800));
+			for (const c of escaped) {
+				if (delay)
+					await new Promise(r => setTimeout(r, randomIntFromInterval(50, 100)));
+				append(c)
+			}
+			await new Promise(r => setTimeout(r, randomIntFromInterval(100, 200)));
+		};
+		function randomIntFromInterval(min, max) { // min and max included
+			return Math.floor(Math.random() * (max - min + 1) + min);
+		}
+
+		const escapeHtml = (str) => str
+			.replaceAll('&', '&amp;')
+			.replaceAll('<', '&lt;')
+			.replaceAll('>', '&gt;');
+
+		const history = [];
+		let histIdx = -1;
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			const raw = input.value.trim();
+			if (!raw) return;
+
+			// show the entered command as a prompt line
+			await writePrompt(raw, false);
+
+			// add to history
+			history.push(raw);
+			histIdx = history.length;
+
+			// parse and execute
+			const [cmd, ...args] = raw.split(/\s+/);
+			const fn = commands[cmd];
+			if (typeof fn === 'function') {
+				const res = fn(...args);
+				if (res !== null && res !== undefined && res !== '') writeLine(res);
+			} else {
+				writeLine(`command not found: ${escapeHtml(cmd)}\nType 'help' to see available commands.`);
+			}
+
+			input.value = '';
+			input.focus();
+		});
+
+		// history navigation
+		input.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				if (histIdx > 0) histIdx--;
+				input.value = history[histIdx] ?? input.value;
+				setTimeout(() => input.setSelectionRange(input.value.length, input.value.length));
+			} else if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				if (histIdx < history.length) histIdx++;
+				input.value = history[histIdx] ?? '';
+				setTimeout(() => input.setSelectionRange(input.value.length, input.value.length));
+			}
+		});
+
+		// Seed demo output
+		async function seedDemo() {
+			const demo = [
+				{ i: 'whoami' },
+				{ o: commands.whoami() },
+				{ i: 'location' },
+				{ o: commands.location() },
+				{ i: 'experience' },
+				{ o: commands.experience() },
+				{ i: 'backend' },
+				{ o: commands.backend() },
+				{ i: 'frontend' },
+				{ o: commands.frontend() },
+				{ i: 'links' },
+				{ o: commands.links() },
+			];
+			for (const step of demo) {
+				if (step.i) {
+					await writePrompt(step.i, true);
+				}
+				if (step.o){
+					writeLine(step.o);
+					await new Promise(r => setTimeout(r, 100));
+				}
+			}
+		}
+
+		await seedDemo();
+		input.focus();
+	</script>
+
+</Layout>
